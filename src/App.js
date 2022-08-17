@@ -2,8 +2,14 @@ import './App.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { useState } from 'react';
+// 임포트해서 가져오기
+import data from './data.js';
 
 function App() {
+
+  let [shoes] = useState(data);
+
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
@@ -18,30 +24,31 @@ function App() {
       </Navbar>
 
       <div className='main-bg'></div>
-
       <div className="container">
         <div className="row">
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes2.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes3.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
+        <ShoesComp shoes={shoes}/>
+          
+
         </div>
       </div>
 
 
     </div>
   );
+}
+
+// 무조건 컴포넌트 이름은 대문자로 시작해야된다!!
+function ShoesComp(props){
+  return(
+    props.shoes.map((item, index)=>(
+      <div className="col-md-4" key={index}>
+        <img src={props.shoes[index].url} width="80%" alt={props.shoes[index].title}/>
+        <h4>{props.shoes[index].title}</h4>
+        <p>{props.shoes[index].price} WON</p>
+        <p>{props.shoes[index].content}</p>
+      </div>
+    ))
+  )
 }
 
 export default App;

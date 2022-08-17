@@ -26,28 +26,29 @@ function App() {
       <div className='main-bg'></div>
       <div className="container">
         <div className="row">
-        <ShoesComp shoes={shoes}/>
-          
-
+         {
+            shoes.map((item, index) => {
+              return(
+                <ShoesComp shoes={shoes[index]}/>
+              )
+            })
+          }
         </div>
       </div>
-
-
     </div>
   );
 }
 
 // 무조건 컴포넌트 이름은 대문자로 시작해야된다!!
 function ShoesComp(props){
+  let shoes = props.shoes;
   return(
-    props.shoes.map((item, index)=>(
-      <div className="col-md-4" key={index}>
-        <img src={props.shoes[index].url} width="80%" alt={props.shoes[index].title}/>
-        <h4>{props.shoes[index].title}</h4>
-        <p>{props.shoes[index].price} WON</p>
-        <p>{props.shoes[index].content}</p>
+      <div className="col-md-4" key={shoes.id}>
+        <img src={shoes.url} width="80%" alt={shoes.title}/>
+        <h4>{shoes.title}</h4>
+        <p>{shoes.price} WON</p>
+        <p>{shoes.content}</p>
       </div>
-    ))
   )
 }
 

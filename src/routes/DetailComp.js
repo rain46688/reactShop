@@ -26,15 +26,32 @@ function DetailComp(props) {
   // 하지만 log를 useEffect 밖으로 빼도 똑같이 실행된다 이건 html 뿌려진 이후에 실행하는것이라
   // 안에선 시간이 오래걸리는 디비 조회 같은 작업을 넣는게 좋음
   useEffect(()=>{
-    console.log("디테일");
+    // console.log("디테일");
     // 2초 후 배너 지우기
     setTimeout(()=>{
       setAlert(false);
     },2000);
+
+    if(isNaN(Number(input))){
+      // console.log("숫자 아님");
+      setInput('');
+    }
+
+    return ()=>{
+      // 클리너 함수 useEffect 하기 전에 실행되는거
+      // 처음에 실행될때는 위에 log가 먼저 실행되지만 [] 지우고 버튼으로 state 변경해서 페이지 업데이트하면 클리너 함수가 먼저 실행되고 뒤에
+      // 디테일이 log가 실행됨
+      // console.log("클리너 함수");
+    }
   })
+  //   }, [])
+
+  // [] 넣는 이유는 페이지가 업데이트 될때는 실행안되게 하려고 디펜던시를 넣는것
+  // mount시 1회 코드 실행되게됨
 
   // let [count, setCount] = useState(0);
   let [alert,setAlert] = useState(true);
+  let [input,setInput] = useState('');
 
   // url 파라미터 가져오기
   let {id} = useParams();
@@ -58,6 +75,7 @@ function DetailComp(props) {
 
           {/* {count}
           <button onClick={()=>{setCount(count+1)}}>버튼</button> */}
+
           <div ></div>
           <div className="row">
             <div className="col-md-6">
@@ -70,6 +88,9 @@ function DetailComp(props) {
               <h4 className="pt-5">{chooseShoes.title}</h4>
               <p>{chooseShoes.content}</p>
               <p>{chooseShoes.price} WON</p>
+              <input onChange={(e)=>{
+                setInput(e.target.value);
+              }} value={input}></input>
               <button className="btn btn-danger">주문하기</button>
             </div>
           </div>

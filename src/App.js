@@ -56,6 +56,17 @@ function App() {
 function MainComp(props) {
   let shoes = props.shoes;
   let setShoes = props.setShoes;
+  let [copyShoes, setCopyShoes] = useState(shoes);
+
+  // 예시에 신발 이미지가 404라 임의로 바꾼것
+  for(let i in shoes){
+    if(shoes[i].id == 7)
+      shoes[i].url='https://cdn.vox-cdn.com/thumbor/D9YWCMaqQG_HwxeGdyFXoTzjzIw=/0x0:2000x1284/1520x1013/filters:focal(840x482:1160x802):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/56473521/pizza_shoe12.0.jpg';
+    else if(shoes[i].id == 8)
+      shoes[i].url='https://media.gq.com/photos/610966c300629082f58db9b8/master/w_2000,h_1333,c_limit/Cariuma-Catiba-Pro-sneaker.jpg';
+    else
+    shoes[i].url = `https://codingapple1.github.io/shop/shoes${(shoes[i].id + 1)}.jpg`;
+  }
   return (
     <>
       <div className="main-bg"></div>
@@ -64,7 +75,7 @@ function MainComp(props) {
         <div className="sortButton">
           <Button variant="primary" onClick={()=>{
             console.log("정렬");
-            let copy = [...shoes];
+            let copy = [...copyShoes];
             copy.sort((a,b)=>{
               if(a.title > b.title){
                 return 1;
@@ -82,16 +93,19 @@ function MainComp(props) {
           })}
         </div>
         <Button onClick={()=>{
-          axios.get('https://codingapple1.github.io/shop/data2.json')
+
+          axios.get(`https://codingapple1.github.io/shop/data${(shoes.length/3) + 1}.json`)
           .then((result)=>{
-            console.log("성공 : ",result);
-            let copy = [...shoes];
-            let array = copy.concat(result.data);
-            console.log("새로운 배열 : ",array);
+            // console.log("성공 : ",result);
+            
+            let array = copyShoes.concat(result.data);
+            // console.log("새로운 배열 : ",array);
             setShoes(array);
+            setCopyShoes(array);
           })
           .catch((error)=>{
             console.log("에러 : ",error);
+            console.log("더이상 상품이 없습니다.");
           })
         }}variant="primary">더보기</Button>
       </div>
@@ -107,7 +121,7 @@ function ShoesComp(props) {
   return (
     <>
       <div className="col-md-4">
-        <img src={`https://codingapple1.github.io/shop/shoes${(props.index + 1)}.jpg`} width="80%" alt={shoes.title} />
+        <img src={shoes.url} width="80%" alt={shoes.title} />
         <h4>{shoes.title}</h4>
         <p>{shoes.price} WON</p>
         <p>{shoes.content}</p>

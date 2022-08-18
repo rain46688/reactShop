@@ -11,9 +11,10 @@ import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import DetailComp from "./routes/DetailComp.js";
 // 404 이미지
 import Image404 from '../src/img/404.png';
+import Button from 'react-bootstrap/Button';
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes,setShoes] = useState(data);
   // 라우팅 도와주는 네비케이션 기능
   let navigate = useNavigate();
 
@@ -32,8 +33,8 @@ function App() {
 
       {/* 라우팅 사용법 */}
       <Routes>
-        <Route path="/" element={<MainComp shoes={shoes} />} />
-        <Route path="/detail" element={<DetailComp />} />
+        <Route path="/" element={<MainComp setShoes={setShoes} shoes={shoes} />} />
+        <Route path="/detail/:id" element={<DetailComp shoes={shoes}/>} />
         {/*  nested routes 라는 문법임 /about/member 이런식으로 접속했을때 어떤 페이지로 갈지 정하는것임
         이건 그냥 넣는다고 보여지는건 아니고 about 컴포넌트에서 <Outlet></Outlet> 으로 소켓을 뚫어줘야됨 */}
         <Route path="/about" element={<About/>}>
@@ -58,6 +59,22 @@ function MainComp(props) {
       <div className="main-bg"></div>
       <div className="container">
         <div className="row">
+        <div className="sortButton">
+          <Button variant="primary" onClick={()=>{
+            console.log("정렬");
+            let copy = [...shoes];
+            copy.sort((a,b)=>{
+              if(a.title > b.title){
+                return 1;
+              }
+              if(a.title < b.title){
+                return -1;
+              }
+              return 0;
+            });
+            props.setShoes(copy);
+          }}>상품 정렬</Button>{' '}
+        </div>
           {shoes.map((item, index) => {
             return <ShoesComp shoes={shoes[index]} key={index}/>;
           })}

@@ -44,3 +44,13 @@
   background-size : cover;
   background-position : center;
 }
+
+/* 7강 */
+
+.sortButton{
+  text-align: end;
+}
+
+.sortButton > Button {
+  margin: 1rem;
+}

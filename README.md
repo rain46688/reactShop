@@ -1,7 +1,7 @@
 # Main
-![](/src/assets/5.png)
+![](/src/assets/11.png)
 # Detail
-![](/src/assets/5-2.png)
+![](/src/assets/11-2.png)
 # Not Found
 ![](/src/assets/5-3.png)
 > 리액트를 활용한 쇼핑몰 사이트

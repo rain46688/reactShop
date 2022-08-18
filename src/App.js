@@ -12,6 +12,7 @@ import DetailComp from "./routes/DetailComp.js";
 // 404 이미지
 import Image404 from '../src/img/404.png';
 import Button from 'react-bootstrap/Button';
+import axios from "axios";
 
 function App() {
   let [shoes,setShoes] = useState(data);
@@ -54,6 +55,7 @@ function App() {
 // 메인 화면 컴포넌트
 function MainComp(props) {
   let shoes = props.shoes;
+  let setShoes = props.setShoes;
   return (
     <>
       <div className="main-bg"></div>
@@ -72,13 +74,26 @@ function MainComp(props) {
               }
               return 0;
             });
-            props.setShoes(copy);
+            setShoes(copy);
           }}>상품 정렬</Button>{' '}
         </div>
           {shoes.map((item, index) => {
-            return <ShoesComp shoes={shoes[index]} key={index}/>;
+            return <ShoesComp shoes={shoes[index]} index={index} key={index}/>;
           })}
         </div>
+        <Button onClick={()=>{
+          axios.get('https://codingapple1.github.io/shop/data2.json')
+          .then((result)=>{
+            console.log("성공 : ",result);
+            let copy = [...shoes];
+            let array = copy.concat(result.data);
+            console.log("새로운 배열 : ",array);
+            setShoes(array);
+          })
+          .catch((error)=>{
+            console.log("에러 : ",error);
+          })
+        }}variant="primary">더보기</Button>
       </div>
     </>
   );
@@ -88,10 +103,11 @@ function MainComp(props) {
 // 무조건 컴포넌트 이름은 대문자로 시작해야된다!!
 function ShoesComp(props) {
   let shoes = props.shoes;
+  let setShoes = props.setShoes;
   return (
     <>
       <div className="col-md-4">
-        <img src={shoes.url} width="80%" alt={shoes.title} />
+        <img src={`https://codingapple1.github.io/shop/shoes${(props.index + 1)}.jpg`} width="80%" alt={shoes.title} />
         <h4>{shoes.title}</h4>
         <p>{shoes.price} WON</p>
         <p>{shoes.content}</p>

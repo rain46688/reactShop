@@ -12,6 +12,7 @@ import data from "./data.js";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 // 외부로 js 파일을 빼놓고 가져와서 라우팅을 진행할 수 있음
 import DetailComp from "./routes/DetailComp.js";
+import Cart from "./routes/Cart.js";
 // 404 이미지
 import Image404 from '../src/img/404.png';
 // 비동기 라이브러리
@@ -31,9 +32,9 @@ function App() {
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand style={{cursor:'pointer'}} onClick={()=>{navigate('/')}}>ReactShop</Navbar.Brand>
-          {/* <Nav className="me-auto">
-            <Nav.Link style={{cursor:'pointer'}} onClick={()=>{navigate('/detail')}}>Detail</Nav.Link>
-          </Nav> */}
+          <Nav className="me-auto">
+            <Nav.Link style={{cursor:'pointer'}} onClick={()=>{navigate('/cart')}}>Cart</Nav.Link>
+          </Nav>
         </Container>
       </Navbar>
 
@@ -41,6 +42,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainComp setShoes={setShoes} shoes={shoes} copyShoes={copyShoes} setCopyShoes={setCopyShoes}/>} />
         <Route path="/detail/:id" element={<DetailComp shoes={shoes} copyShoes={copyShoes}/>} />
+        <Route path="/cart" element={<Cart shoes={shoes} copyShoes={copyShoes}/>} />
         <Route path="*" element={<><img src={Image404} width="40%" alt='404이미지'/></>} />
       </Routes>
     </div>

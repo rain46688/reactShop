@@ -55,7 +55,7 @@
   margin: 1rem;
 }
 
-/* 14강 */
+/* 14강 애니메이션 */
 
 .start{
   opacity: 0;
@@ -65,3 +65,5 @@
   opacity: 1;
   transition : opacity 0.5s;
 }
+
+/*  */

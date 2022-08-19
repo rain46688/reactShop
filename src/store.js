@@ -35,8 +35,19 @@ let item = createSlice({
             for(let i in state)
                 if(state[i].id == num.payload)
                     state[i].count++;
-
-            return state;
+            // array/object 경우 직접 수정해도 그냥 state가 변경됨 return 안해도됨!
+            // return state;
+        },
+        // 상세 화면에서 주문하기 클릭하면 장바구니로 상품 추가하는것
+        addItem(state, actions){
+            console.log("addItem : ",actions.payload);
+            // 가장 큰 값 찾아서 id 값으로 넣어주기
+            let max = state[0].id;
+            for(let i in state){
+                if(max < state[i].id)
+                    max = state[i].id;
+            }
+            state.push({id : (max + 1), name : actions.payload.title, count : 1})
         }
     }
 })
@@ -44,7 +55,7 @@ let item = createSlice({
 
 // 함수 내보내는 방법 이렇게 해야지만 다른곳에서 호출할 수 있음
 export let {changeName} = user.actions;
-export let {changeCount} = item.actions;
+export let {changeCount, addItem} = item.actions;
 
 export default configureStore({
     // 여기서 등록해줘야됨

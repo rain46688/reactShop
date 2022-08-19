@@ -4,9 +4,15 @@ import styled from 'styled-components'
 import { useEffect, useState } from "react";
 import Alert from 'react-bootstrap/Alert';
 import Nav from 'react-bootstrap/Nav';
+import { useSelector, useDispatch } from 'react-redux'
+import {addItem } from './../store.js';
+
 
 // 상세 화면 컴포넌트
 function DetailComp({copyShoes, shoes}) {
+
+   // redux 수정함수 호출 방법
+   let dispatch = useDispatch();
 
   // 랜더링 될때마다 실행됨
   // 하지만 log를 useEffect 밖으로 빼도 똑같이 실행된다 이건 html 뿌려진 이후에 실행하는것이라
@@ -85,10 +91,12 @@ function DetailComp({copyShoes, shoes}) {
               <h4 className="pt-5">{chooseShoes.title}</h4>
               <p>{chooseShoes.content}</p>
               <p>{chooseShoes.price} WON</p>
-              <input onChange={(e)=>{
+              {/* <input onChange={(e)=>{
                 setInput(e.target.value);
-              }} value={input}></input>
-              <button className="btn btn-danger">주문하기</button>
+              }} value={input}></input> */}
+              <button onClick={()=>{
+                dispatch(addItem(chooseShoes))
+              }} className="btn btn-danger">주문하기</button>
             </div>
           </div>
 

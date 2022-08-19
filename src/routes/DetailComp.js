@@ -3,6 +3,7 @@ import data from "../data.js";
 import styled from 'styled-components'
 import { useEffect, useState } from "react";
 import Alert from 'react-bootstrap/Alert';
+import Nav from 'react-bootstrap/Nav';
 
 // 이런식으로 styled를 이용해서 버튼을 만들어서 컴포넌트 처럼 사용 가능
 // 장점은 css 파일을 따로 만들지 않고 사용 가능하며 css에 props같은 react, js 문법을 넣을수있고 js 하나에 종속되서 로딩 개선
@@ -52,6 +53,7 @@ function DetailComp(props) {
   // let [count, setCount] = useState(0);
   let [alert,setAlert] = useState(true);
   let [input,setInput] = useState('');
+  let [tab, setTab] = useState(0);
 
   // url 파라미터 가져오기
   let {id} = useParams();
@@ -94,9 +96,51 @@ function DetailComp(props) {
               <button className="btn btn-danger">주문하기</button>
             </div>
           </div>
+
+
+{/* 탭 컨텐츠 추가 */}
+          <Nav variant="tabs"  defaultActiveKey="link0">
+            <Nav.Item>
+              <Nav.Link onClick={()=>{
+                setTab(0)
+              }}eventKey="link0">버튼0</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link onClick={()=>{
+                setTab(1)
+              }}eventKey="link1">버튼1</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link onClick={()=>{
+                setTab(2)
+              }}eventKey="link2">버튼2</Nav.Link>
+            </Nav.Item>
+        </Nav>
+        
+        {/* 탭 컨텐츠! */}
+        <TabContent tab={tab}/>
+        
+
         </div>
       </>
     );
   }
+
+  // {tab} 이렇게 파라미터에 넣으면 props 이런식으로 안가져와도 바로 사용 가능하다!
+  function TabContent({tab}){
+
+    // if문을 안써도 이렇게 할수도있음 하지만 코드가 길어지면 생각해봐야될지도?
+    // return [ <div>내용0</div>, <div>내용1</div>, <div>내용2</div> ][tab]
+
+    if(tab == 0){
+      return <div>내용0</div>
+        }else if(tab == 1){
+          return <div>내용1</div>
+        }else if(tab == 2){
+          return <div>내용2</div>
+        }
+  }
+        
+
 
   export default DetailComp;

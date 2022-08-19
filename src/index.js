@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  // </React.StrictMode> 이거 지우면 콘솔창에 log 두번 찍히는거 사라진다함 디버깅용으로 Mode 지정한것인듯
   <React.StrictMode>
     {/* 라우팅 관련되서 사용하려면 App을 <BrowserRouter>로 감싸야됨 */}
     <BrowserRouter>

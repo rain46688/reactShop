@@ -6,7 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import Nav from 'react-bootstrap/Nav';
 
 // 상세 화면 컴포넌트
-function DetailComp({copyShoes}) {
+function DetailComp({copyShoes, shoes}) {
 
   // 랜더링 될때마다 실행됨
   // 하지만 log를 useEffect 밖으로 빼도 똑같이 실행된다 이건 html 뿌려진 이후에 실행하는것이라
@@ -112,7 +112,7 @@ function DetailComp({copyShoes}) {
         </Nav>
         
         {/* 탭 컴포넌트 */}
-        <TabContent tab={tab}/>
+        <TabContent tab={tab} shoes={shoes}/>
 
         </div>
       </>
@@ -120,7 +120,7 @@ function DetailComp({copyShoes}) {
   }
 
   // {tab} 이렇게 파라미터에 넣으면 props 이런식으로 안가져와도 바로 사용 가능하다!
-  function TabContent({tab}){
+  function TabContent({tab, shoes}){
 
     // if문을 안써도 이렇게 할수도있음 하지만 코드가 길어지면 생각해봐야될지도?
     // return [ <div>내용0</div>, <div>내용1</div>, <div>내용2</div> ][tab]
@@ -140,7 +140,7 @@ function DetailComp({copyShoes}) {
     },[tab]);
 
     if(tab == 0){
-      return <div className={`start ${fade}`}><div>내용0</div></div>
+      return <div className={`start ${fade}`}><div>내용0</div><h4>{shoes[0].title}</h4></div>
         }else if(tab == 1){
           return <div className={`start ${fade}`}><div>내용1</div></div>
         }else if(tab == 2){

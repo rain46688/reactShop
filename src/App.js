@@ -17,6 +17,8 @@ import Image404 from '../src/img/404.png';
 // 비동기 라이브러리
 import axios from "axios";
 
+//Context API 문법을 사용하면 편하게 자식의 자식에게도 state를 공유 가능하지만 재렌더링이 비효율적으로 되서 잘 안쓴다.
+
 // App 컴포넌트
 function App() {
   let [shoes,setShoes] = useState(data);

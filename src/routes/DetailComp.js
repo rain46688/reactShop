@@ -5,23 +5,8 @@ import { useEffect, useState } from "react";
 import Alert from 'react-bootstrap/Alert';
 import Nav from 'react-bootstrap/Nav';
 
-// 이런식으로 styled를 이용해서 버튼을 만들어서 컴포넌트 처럼 사용 가능
-// 장점은 css 파일을 따로 만들지 않고 사용 가능하며 css에 props같은 react, js 문법을 넣을수있고 js 하나에 종속되서 로딩 개선
-// 종속 문제는 App.css 파일을 App.module.css 이런식으로 js 파일명 뒤에.module 붙이면 css가 js에 종속되게 할수도있으니 편한걸 쓰자
-// 단점은 코드가 복잡해지고 컴포넌트가 css인지 일반 컴포넌트인지 헷갈림
-// let YellowBtn = styled.button`
-//   background : ${ props => props.bg };
-//   color : black;
-//   padding : 10px;
-// `;
-
-// 라이프 사이클
-// mount : 페이지 장착
-// update : 변경됨
-// unmount : 제거됨
-
 // 상세 화면 컴포넌트
-function DetailComp(props) {
+function DetailComp({copyShoes}) {
 
   // 랜더링 될때마다 실행됨
   // 하지만 log를 useEffect 밖으로 빼도 똑같이 실행된다 이건 html 뿌려진 이후에 실행하는것이라
@@ -33,6 +18,8 @@ function DetailComp(props) {
       setAlert(false);
     },2000);
 
+    setTimeout(()=>{ setFade('end');},100)
+
     if(isNaN(Number(input))){
       // console.log("숫자 아님");
       setInput('');
@@ -43,31 +30,42 @@ function DetailComp(props) {
       // 처음에 실행될때는 위에 log가 먼저 실행되지만 [] 지우고 버튼으로 state 변경해서 페이지 업데이트하면 클리너 함수가 먼저 실행되고 뒤에
       // 디테일이 log가 실행됨
       // console.log("클리너 함수");
+      clearTimeout();
     }
   })
   //   }, [])
 
   // [] 넣는 이유는 페이지가 업데이트 될때는 실행안되게 하려고 디펜던시를 넣는것
   // mount시 1회 코드 실행되게됨
+  // 안에 state를 넣으면 그게 변경되면 실행되도록할 수 있음
 
-  // let [count, setCount] = useState(0);
   let [alert,setAlert] = useState(true);
   let [input,setInput] = useState('');
   let [tab, setTab] = useState(0);
-
+  // 본문 애니메이션 state
+  let [fade, setFade] = useState('');
   // url 파라미터 가져오기
   let {id} = useParams();
   // 파라미터 id 값이랑 비교해서 같은 요소를 하나 찾아서 그걸 상세 페이지에 뿌려줌
-  let chooseShoes = data.find((e)=>{
+  let chooseShoes = copyShoes.find((e)=>{
     if(e.id == id){
       return true;
     }
   });
 
+   // 예시에 신발 이미지가 404라 임의로 바꾼것
+   for(let i in copyShoes){
+    if(copyShoes[i].id == 7)
+    copyShoes[i].url='https://cdn.vox-cdn.com/thumbor/D9YWCMaqQG_HwxeGdyFXoTzjzIw=/0x0:2000x1284/1520x1013/filters:focal(840x482:1160x802):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/56473521/pizza_shoe12.0.jpg';
+    else if(copyShoes[i].id == 8)
+    copyShoes[i].url='https://media.gq.com/photos/610966c300629082f58db9b8/master/w_2000,h_1333,c_limit/Cariuma-Catiba-Pro-sneaker.jpg';
+    else
+    copyShoes[i].url = `https://codingapple1.github.io/shop/shoes${(copyShoes[i].id + 1)}.jpg`;
+  }
+
     return (
       <>
-      {/* <YellowBtn bg="orange">styled버튼</YellowBtn> */}
-        <div className="container">
+        <div className={`container start ${fade}`}>
           {
             alert == true ?  
             <Alert variant="warning">
@@ -75,14 +73,11 @@ function DetailComp(props) {
             </Alert> : null
           }
 
-          {/* {count}
-          <button onClick={()=>{setCount(count+1)}}>버튼</button> */}
-
           <div ></div>
           <div className="row">
             <div className="col-md-6">
               <img
-                src={`https://codingapple1.github.io/shop/shoes${(chooseShoes.id + 1)}.jpg`}
+                src={chooseShoes.url}
                 width="100%" alt={chooseShoes.title}
               />
             </div>
@@ -96,7 +91,6 @@ function DetailComp(props) {
               <button className="btn btn-danger">주문하기</button>
             </div>
           </div>
-
 
 {/* 탭 컨텐츠 추가 */}
           <Nav variant="tabs"  defaultActiveKey="link0">
@@ -117,9 +111,8 @@ function DetailComp(props) {
             </Nav.Item>
         </Nav>
         
-        {/* 탭 컨텐츠! */}
+        {/* 탭 컴포넌트 */}
         <TabContent tab={tab}/>
-        
 
         </div>
       </>
@@ -132,15 +125,27 @@ function DetailComp(props) {
     // if문을 안써도 이렇게 할수도있음 하지만 코드가 길어지면 생각해봐야될지도?
     // return [ <div>내용0</div>, <div>내용1</div>, <div>내용2</div> ][tab]
 
+    // 탭 애니메이션 state
+    let [fade, setFade] = useState('');
+
+    // 탭을 누를때마다 본문 띄우는곳에 애니메이션을 주고싶을때
+    // 탭 태그에 하나하나 click을 넣을수도있지만 [tab]로 tab state가 변경될때마다 useEffect에서 처리할수도있음
+    useEffect(()=>{
+      setTimeout(()=>{ setFade('end');},100)
+
+      return()=>{
+        clearTimeout();
+        setFade('');
+      }
+    },[tab]);
+
     if(tab == 0){
-      return <div>내용0</div>
+      return <div className={`start ${fade}`}><div>내용0</div></div>
         }else if(tab == 1){
-          return <div>내용1</div>
+          return <div className={`start ${fade}`}><div>내용1</div></div>
         }else if(tab == 2){
-          return <div>내용2</div>
+          return <div className={`start ${fade}`}><div>내용2</div></div>
         }
   }
-        
-
 
   export default DetailComp;

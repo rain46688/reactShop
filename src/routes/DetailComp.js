@@ -69,6 +69,17 @@ function DetailComp({copyShoes, shoes}) {
     copyShoes[i].url = `https://codingapple1.github.io/shop/shoes${(copyShoes[i].id + 1)}.jpg`;
   }
 
+  // 로컬 스토리지에 array 가져오기
+  let array = JSON.parse(localStorage.getItem('watched'));
+  let result = array.find(e => e === chooseShoes.id);
+
+  // 없으면 봤던 상세 페이지의 제품을 배열에 넣기 중복 x
+  if(result == undefined){
+    console.log("없음");
+    array.push(chooseShoes.id);
+    localStorage.setItem('watched',JSON.stringify(array));
+  }
+
     return (
       <>
         <div className={`container start ${fade}`}>

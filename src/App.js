@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from 'react-bootstrap/Button';
 // useState
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // 임포트해서 가져오기
 import data from "./data.js";
 // 라우팅 관련 임포트
@@ -26,6 +26,19 @@ function App() {
   // 라우팅 도와주는 네비케이션 기능
   let navigate = useNavigate();
   let [copyShoes, setCopyShoes] = useState(shoes);
+
+  useEffect(()=>{
+    console.log("App 처음 실행했을때");
+    // 상세 페이지 클릭했을때 본 내역을 로컬 스토리지에 저장하기 위해 App 처음 실행시 array를 넣어줌
+    localStorage.setItem('watched',JSON.stringify([]));
+  },[]);
+
+
+  // 로컬 스토리지 사용법
+  let obj = {name : 'kim'};
+  localStorage.setItem('data',JSON.stringify(obj));
+  let 꺼낸거 = localStorage.getItem('data');
+  console.log("JSON : ",JSON.parse(꺼낸거).name);
 
   return (
     <div className="App">

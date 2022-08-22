@@ -5,14 +5,15 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from 'react-bootstrap/Button';
 // useState
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 // 임포트해서 가져오기
 import data from "./data.js";
 // 라우팅 관련 임포트
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 // 외부로 js 파일을 빼놓고 가져와서 라우팅을 진행할 수 있음
-import DetailComp from "./routes/DetailComp.js";
-import Cart from "./routes/Cart.js";
+// import DetailComp from "./routes/DetailComp.js";
+// import Cart from "./routes/Cart.js";
+
 // 404 이미지
 import Image404 from '../src/img/404.png';
 // 비동기 라이브러리
@@ -21,7 +22,9 @@ import axios from "axios";
 // 리액트 쿼리 라이브러리 사용하기, npm install @tanstack/react-query
 import { useQuery } from '@tanstack/react-query'//1번
 
-//Context API 문법을 사용하면 편하게 자식의 자식에게도 state를 공유 가능하지만 재렌더링이 비효율적으로 되서 잘 안쓴다.
+// lazy라고 표시하면 필요해질때 임포트를 해오는 기능임
+const DetailComp = lazy( () => import('./routes/DetailComp.js') )
+const Cart = lazy( () => import('./routes/Cart.js') )
 
 // App 컴포넌트
 function App() {
@@ -64,7 +67,7 @@ function App() {
             <Nav.Link style={{cursor:'pointer'}} onClick={()=>{navigate('/cart')}}>Cart</Nav.Link>
           </Nav>
 
-          <Nav className="ms-auto">반가워요 {result.data.name}</Nav>
+          <Nav className="ms-auto">반가워요 {result.data != undefined ? result.data.name : ''}</Nav>
         </Container>
       </Navbar>
 

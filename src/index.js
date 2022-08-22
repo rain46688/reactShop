@@ -9,10 +9,16 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 
+// 리액트 쿼리 라이브러리 사용하기, npm install @tanstack/react-query
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'//1번
+const queryClient = new QueryClient()//2번
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // </React.StrictMode> 이거 지우면 콘솔창에 log 두번 찍히는거 사라진다함 디버깅용으로 Mode 지정한것인듯
   //<React.StrictMode>
+  // 리액트 쿼리 라이브러리 사용하기 QueryClientProvider로 감싸줘야됨
+  <QueryClientProvider client={queryClient}> 
       <Provider store={store}>
         {/* redux를 사용하려면 <Provider>로 여기를 감싸줘야됨 */}
         <BrowserRouter>
@@ -20,6 +26,7 @@ root.render(
           <App />
         </BrowserRouter>
       </Provider>
+  </QueryClientProvider>
   //</React.StrictMode>
 );
 

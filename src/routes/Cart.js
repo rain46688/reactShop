@@ -17,7 +17,7 @@ function Cart(){
 
     return(
         <div>
-            {user} 의 장바구니
+            {/* {user} 의 장바구니 */}
            <CartItems/>
         </div>
     )

@@ -18,6 +18,9 @@ import Image404 from '../src/img/404.png';
 // 비동기 라이브러리
 import axios from "axios";
 
+// 리액트 쿼리 라이브러리 사용하기, npm install @tanstack/react-query
+import { useQuery } from '@tanstack/react-query'//1번
+
 //Context API 문법을 사용하면 편하게 자식의 자식에게도 state를 공유 가능하지만 재렌더링이 비효율적으로 되서 잘 안쓴다.
 
 // App 컴포넌트
@@ -33,21 +36,35 @@ function App() {
     localStorage.setItem('watched',JSON.stringify([]));
   },[]);
 
+  // 리액트 쿼리 사용해서 가져오기
+  // 장점 : 성공/실패/로딩중 쉽게 파악 가능
+  // 주기적으로 자동 데이터 갱신해줌
+  // 두번 요청하는건 알아서 하나만 요청해줌
+  //  요청 내역 캐시 보관해두고 이전 요청 먼저 보여주고 새로 요청함
+  let result = useQuery(['user'], ()=>
+  axios.get('https://codingapple1.github.io/userdata.json')
+  .then((a)=>{ 
+    console.log("a : ",a);
+    return a.data 
+  })
+)
 
   // 로컬 스토리지 사용법
-  let obj = {name : 'kim'};
-  localStorage.setItem('data',JSON.stringify(obj));
-  let 꺼낸거 = localStorage.getItem('data');
-  console.log("JSON : ",JSON.parse(꺼낸거).name);
+  // let obj = {name : 'kim'};
+  // localStorage.setItem('data',JSON.stringify(obj));
+  // let 꺼낸거 = localStorage.getItem('data');
+  // console.log("JSON : ",JSON.parse(꺼낸거).name);
 
   return (
     <div className="App">
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg="light" variant="light">
         <Container>
           <Navbar.Brand style={{cursor:'pointer'}} onClick={()=>{navigate('/')}}>ReactShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link style={{cursor:'pointer'}} onClick={()=>{navigate('/cart')}}>Cart</Nav.Link>
           </Nav>
+
+          <Nav className="ms-auto">반가워요 {result.data.name}</Nav>
         </Container>
       </Navbar>
 

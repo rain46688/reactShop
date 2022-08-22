@@ -31,10 +31,13 @@ let item = createSlice({
         changeCount(state, num){
             // console.log("state : ",state[0].count);
             // console.log("num : ",num.payload);
+
+            let 번호 = state.findIndex((a)=> a.id === num.payload);
+            state[번호].count++;
             
-            for(let i in state)
-                if(state[i].id == num.payload)
-                    state[i].count++;
+            // for(let i in state)
+            //     if(state[i].id == num.payload)
+            //         state[i].count++;
             // array/object 경우 직접 수정해도 그냥 state가 변경됨 return 안해도됨!
             // return state;
         },
